@@ -1,11 +1,11 @@
 // Configuración Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyApdnTXHE7O6AoU9ldEV4yzsCVBGdsWuRg",
-  authDomain: "web-appsmart-technology.firebaseapp.com",
-  projectId: "web-appsmart-technology",
-  storageBucket: "web-appsmart-technology.firebasestorage.app",
-  messagingSenderId: "595885713972",
-  appId: "1:595885713972:web:9ab9dd4072db0101207861"
+  apiKey: "AIzaSyCEMOAiEhDC-Z5nS4_yB-a1s3T_61PrHF4"
+  authDomain: "appwebs-8b23f.firebaseapp.com",
+  projectId: "appwebs-8b23f",
+  storageBucket: "appwebs-8b23f.firebasestorage.app",
+  messagingSenderId: "986164552498",
+  appId: "1:986164552498:web:04262bde6fa35e5efced2b",
 };
 
 // Inicializar Firebase
