@@ -1,6 +1,6 @@
 {
-  "name": "AppsMart",
-  "short_name": "AppsMart",
+  "name": "Appser Store",
+  "short_name": "Appser",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
