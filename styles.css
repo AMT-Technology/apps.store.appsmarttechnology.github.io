@@ -187,6 +187,7 @@ body {
   }
   .store-main {
     padding: 14px 12px 30px;
+    flex: 1; /* 👈 CLAVE */
   }
 }
 
@@ -199,3 +200,13 @@ body {
   border-radius: 14px;
   background: #020617;
 }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
