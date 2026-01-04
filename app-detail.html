@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Appser Store — Detalles de la App</title>
+  <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- SEO dinámico -->
@@ -12,23 +13,17 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Transformar el overlay en página completa */
-    body {
-      background: #f8fafc;
-      overflow-y: auto;
+    /* Ocultar la sección de apps y mostrar el overlay como contenido */
+    .apps-section {
+      display: none !important;
     }
     
-    .overlay {
+    /* Mostrar el overlay como contenido principal */
+    #detailOverlay {
       display: block !important;
       position: relative;
       background: transparent;
       z-index: 1;
-      height: auto;
-      min-height: 100vh;
-    }
-    
-    .overlay.hidden {
-      display: block !important;
     }
     
     .overlay-backdrop {
@@ -41,99 +36,95 @@
       top: 0;
       left: 0;
       transform: none;
-      width: 100%;
-      max-width: 1200px;
+      max-width: 100%;
+      width: auto;
       min-height: auto;
+      max-height: none;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       border-radius: 16px;
+      background: white;
     }
     
     .overlay-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
       color: #475569;
+      z-index: 100;
     }
     
-    .overlay-close:hover {
-      background: #e2e8f0;
-    }
-    
-    /* Header adicional para la página */
-    .page-header {
-      background: white;
+    /* Asegurar que el overlay ocupe el espacio adecuado */
+    .store-main {
       padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 12px;
+    }
+    
+    #detailOverlay {
+      margin: 0 auto;
       max-width: 1200px;
-      margin: 20px auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .page-header .brand {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      cursor: pointer;
-    }
-    
-    .btn-back {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      color: #475569;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    
-    .btn-back:hover {
-      background: #e2e8f0;
-    }
-    
-    /* Ajustes responsive */
-    @media (max-width: 768px) {
-      .overlay-panel {
-        margin: 10px;
-        padding: 20px 15px;
-      }
-      
-      .page-header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-      }
     }
   </style>
 </head>
-<body>
-  <!-- Header de página -->
-  <div class="page-header">
-    <div class="brand" onclick="window.location.href='index.html'">
-      <img src="logo.webp" alt="Appser" style="width: 40px; height: 40px; border-radius: 8px;">
+
+<body>  
+  <!-- HEADER (IDÉNTICO al index.html) -->
+  <header class="store-header">
+    <div class="brand">
+      <img src="logo.webp" alt="Appser" class="brand-logo" onclick="window.location.href='index.html'">
       <div>
-        <h1 style="font-size: 1.5rem; margin: 0;">Appser Store</h1>
-        <p style="margin: 0; color: #64748b; font-size: 0.9rem;">Apps para todos</p>
+        <h1>Appser Store</h1>
+        <p class="brand-tagline">Apps para todos</p>
       </div>
     </div>
-    <button class="btn-back" onclick="window.history.back()">← Volver</button>
-  </div>
 
-  <!-- OVERLAY convertido en página -->
-  <div id="detailOverlay" class="overlay">
-    <div id="detailBackdrop" class="overlay-backdrop"></div>
-
-    <div class="overlay-panel">
-      <!-- El contenido se cargará dinámicamente -->
-      <div id="detailContent" style="text-align: center; padding: 50px; color: #64748b;">
-        <p>Cargando información de la aplicación...</p>
+    <div class="header-right">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input id="searchInput" type="text" placeholder="Buscar apps, juegos, herramientas..." />
       </div>
     </div>
-  </div>
+  </header>
 
+  <!-- CATEGORÍAS (IDÉNTICAS al index.html) -->
+  <section class="categories-bar">
+    <button class="chip active" data-cat="all">Todas</button>
+    <button class="chip" data-cat="Educación">Educación</button>
+    <button class="chip" data-cat="Libros">Libros</button>
+    <button class="chip" data-cat="Juegos">Juegos</button>
+    <button class="chip" data-cat="Música y Audio">Música y Audio</button>
+    <button class="chip" data-cat="Productividad">Productividad</button>
+    <button class="chip" data-cat="Sociales">Sociales</button>
+    <button class="chip" data-cat="Fotografía y Video">Fotografía y Video</button>
+    <button class="chip" data-cat="Entretenimiento">Entretenimiento</button>
+    <button class="chip" data-cat="Herramientas">Herramientas</button>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="store-main">
+    <!-- SECCIÓN DE APPS (OCULTA) -->
+    <section class="apps-section">
+      <h2 class="section-title">Apps destacadas</h2>
+      <p class="section-subtitle">Explora las últimas aplicaciones disponibles en Appser Store.</p>
+      <div id="appsGrid" class="apps-grid"></div>
+      <p id="emptyState" class="empty-state" style="display:none;">
+        No se encontraron apps para esta búsqueda o categoría.
+      </p>
+    </section>
+    
+    <!-- OVERLAY (VISIBLE COMO CONTENIDO PRINCIPAL) -->
+    <div id="detailOverlay" class="overlay">
+      <div id="detailBackdrop" class="overlay-backdrop"></div>
+
+      <div class="overlay-panel">
+        <!-- El contenido se cargará dinámicamente -->
+        <div id="detailContent" style="text-align: center; padding: 50px; color: #64748b;">
+          <p>Cargando información de la aplicación...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  
   <footer class="store-footer">
     <div>
       © <span id="year"></span> Appser Store — Apps para todos ·
@@ -151,7 +142,7 @@
   <!-- Configuración Firebase -->
   <script src="firebase.js"></script>
 
-  <!-- Lógica -->
+  <!-- Lógica para la página de detalles -->
   <script src="app-detail-logic.js"></script>
 </body>
 </html>
