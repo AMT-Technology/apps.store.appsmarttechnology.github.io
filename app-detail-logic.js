@@ -16,7 +16,7 @@ async function cargarApp() {
   const appId = getAppIdFromURL();
   
   if (!appId) {
-    window.location.href = 'index.html';
+    window.location.href = 'https://appsem.rap-infinite.online/';
     return;
   }
   
@@ -42,7 +42,7 @@ function mostrarError(mensaje) {
   detailContent.innerHTML = `
     <div style="text-align: center; padding: 50px;">
       <h2>${mensaje}</h2>
-      <button class="btn-back" onclick="window.location.href='index.html'" style="
+      <button class="btn-back" onclick="window.location.href='https://appsem.rap-infinite.online/'" style="
         background: #f1f5f9;
         border: 1px solid #cbd5e1;
         color: #475569;
