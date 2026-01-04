@@ -81,13 +81,12 @@
 
   
 .categories-bar {
-  position: fixed;
-  top: 120px;
-  left: 0;
-  right: 0;
-  z-index: 999;
+  position: sticky;
+  top: 72px; /* altura real del header */
+  z-index: 900;
   background: #020617;
 }
+
 .app-detail-page {
   padding-top: 80px;
 }
