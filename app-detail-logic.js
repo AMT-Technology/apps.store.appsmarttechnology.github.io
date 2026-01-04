@@ -1,5 +1,7 @@
 // ====== Referencias DOM ======
 const detailContent = document.getElementById("detailContent");
+const searchInput = document.getElementById("searchInput");
+const chips = document.querySelectorAll(".chip");
 let currentApp = null;
 let reviewStarsSelected = 0;
 
@@ -40,7 +42,15 @@ function mostrarError(mensaje) {
   detailContent.innerHTML = `
     <div style="text-align: center; padding: 50px;">
       <h2>${mensaje}</h2>
-      <button class="btn-back" onclick="window.location.href='index.html'">Volver al inicio</button>
+      <button class="btn-back" onclick="window.location.href='index.html'" style="
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 20px;
+      ">Volver al inicio</button>
     </div>
   `;
 }
@@ -84,7 +94,7 @@ function renderAppDetails(app) {
     return stars;
   }
 
-  // HTML del overlay
+  // HTML del overlay (EXACTO al de la página principal)
   const html = `
     <button id="detailClose" class="overlay-close" onclick="window.history.back()">✕</button>
 
@@ -503,4 +513,23 @@ function handleSendReview() {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   cargarApp();
+  
+  // Hacer que los chips redirijan al index.html
+  chips.forEach(chip => {
+    chip.onclick = () => {
+      window.location.href = 'index.html';
+    };
+  });
+  
+  // Hacer que el buscador redirija al index.html con búsqueda
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      const term = searchInput.value.trim();
+      if (term) {
+        window.location.href = `index.html?search=${encodeURIComponent(term)}`;
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+  });
 });
