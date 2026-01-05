@@ -5,7 +5,7 @@ const chips = document.querySelectorAll(".chip");
 let currentApp = null;
 let reviewStarsSelected = 0;
 
-// ====== Obtener ID de la URL ======
+// ====== Obtener app de la URL ======
 function getAppParamFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get("app");
@@ -14,30 +14,37 @@ function getAppParamFromURL() {
 
 // ====== Cargar datos de la app ======
 async function cargarApp() {
-  const appId = getAppIdFromURL();
-  
-  if (!appId) {
+  const slug = getAppParamFromURL();
+
+  if (!slug) {
     window.location.href = 'index.html';
     return;
   }
-  
+
   try {
-    const doc = await db.collection("apps").doc(appId).get();
-    
-    if (!doc.exists) {
+    const snap = await db
+      .collection("apps")
+      .where("slug", "==", slug)
+      .limit(1)
+      .get();
+
+    if (snap.empty) {
       mostrarError("App no encontrada");
       return;
     }
-    
+
+    const doc = snap.docs[0];
     currentApp = { ...doc.data(), id: doc.id };
+
     renderAppDetails(currentApp);
     actualizarMetaTags(currentApp);
-    
+
   } catch (error) {
     console.error("Error cargando app:", error);
     mostrarError("Error de conexión");
   }
 }
+
 
 function mostrarError(mensaje) {
   detailContent.innerHTML = `
