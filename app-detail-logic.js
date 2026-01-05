@@ -6,10 +6,11 @@ let currentApp = null;
 let reviewStarsSelected = 0;
 
 // ====== Obtener ID de la URL ======
-function getAppIdFromURL() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('id');
+function getAppParamFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("app");
 }
+
 
 // ====== Cargar datos de la app ======
 async function cargarApp() {
