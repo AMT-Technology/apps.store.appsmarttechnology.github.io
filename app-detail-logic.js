@@ -64,15 +64,99 @@ function mostrarError(mensaje) {
 }
 
 function actualizarMetaTags(app) {
+  // 1. Actualizar título
   document.title = `${app.nombre} — Appser Store`;
   
-  // Actualizar meta description
+  // 2. Actualizar meta description
   const metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) {
     metaDesc.content = `Descarga ${app.nombre} para Android desde Appser Store. ${app.descripcion?.substring(0, 150) || ''}`;
   }
+  
+  // 🔴 3. ESTABLECER LA ETIQUETA CANÓNICA (LO MÁS IMPORTANTE)
+  const canonicalTag = document.getElementById('canonicalTag');
+  if (canonicalTag) {
+    const currentUrl = window.location.href;
+    canonicalTag.href = currentUrl;
+    console.log('✅ Canónica establecida:', currentUrl);
+  }
+  
+  // 🔴 4. AGREGAR/ACTUALIZAR OPEN GRAPH TAGS
+  actualizarOpenGraphTags(app);
+  
+  // 🔴 5. AGREGAR JSON-LD STRUCTURED DATA
+  agregarStructuredData(app);
 }
 
+// 🔴 NUEVA FUNCIÓN: Actualizar Open Graph Tags
+function actualizarOpenGraphTags(app) {
+  const ogTags = {
+    'og:title': `${app.nombre} - Appser Store`,
+    'og:description': app.descripcion ? `${app.descripcion.substring(0, 155)}...` : `Descarga ${app.nombre} desde Appser Store`,
+    'og:url': window.location.href,
+    'og:image': app.imagen || app.icono || 'https://appsem.rap-infinite.online/logo.webp',
+    'og:type': 'website'
+  };
+  
+  for (const [property, content] of Object.entries(ogTags)) {
+    let meta = document.querySelector(`meta[property="${property}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('property', property);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content);
+  }
+}
+
+// 🔴 NUEVA FUNCIÓN: Agregar Structured Data (JSON-LD)
+function agregarStructuredData(app) {
+  // Eliminar structured data anterior si existe
+  const oldScript = document.querySelector('script[type="application/ld+json"]');
+  if (oldScript) {
+    oldScript.remove();
+  }
+  
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": app.nombre,
+    "applicationCategory": app.categoria || "Application",
+    "operatingSystem": "Android",
+    "description": app.descripcion || "",
+    "softwareVersion": app.version || "1.0",
+    "datePublished": app.fechaActualizacion || new Date().toISOString().split('T')[0],
+    "author": {
+      "@type": "Organization",
+      "name": "Appser Store",
+      "url": "https://appsem.rap-infinite.online/"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": app.tipo === "Gratis" ? "0" : "Varies",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": app.ratingAvg ? {
+      "@type": "AggregateRating",
+      "ratingValue": app.ratingAvg.toString(),
+      "ratingCount": (app.ratingCount || 0).toString()
+    } : undefined,
+    "image": app.imagen || app.icono || "https://appsem.rap-infinite.online/logo.webp",
+    "url": window.location.href
+  };
+  
+  // Filtrar propiedades undefined
+  Object.keys(structuredData).forEach(key => {
+    if (structuredData[key] === undefined) {
+      delete structuredData[key];
+    }
+  });
+  
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(script);
+}
 // ====== Renderizar detalles de la app ======
 function renderAppDetails(app) {
   const votes = JSON.parse(localStorage.getItem("appsmart_votes") || "{}");
